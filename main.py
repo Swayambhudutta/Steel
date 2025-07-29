@@ -128,32 +128,6 @@ if uploaded_file is not None:
         )
         st.altair_chart(bar_chart, use_container_width=True)
 
-        # Efficiency Comparison
-Q_fuel_orig, Q_air_comb_orig = calculate_heat_input(
-    latest["m_fuel"], latest["cv_fuel"], latest["eta_combustion"],
-    latest["m_air_comb"], cp_air, latest["t_air_comb"], latest["t_ambient"]
-)
-Q_blast_orig = calculate_heat_output(latest["m_air"], cp_air, latest["t_hot_blast"], latest["t_ambient"])
-eta_orig = calculate_efficiency(Q_blast_orig, Q_fuel_orig, Q_air_comb_orig, Q_flue, Q_shell)
-
-comparison_df = pd.DataFrame({
-    "Scenario": ["Original Efficiency", "Modified Efficiency"],
-    "Efficiency (%)": [eta_orig * 89.83, eta_stove * 89.83]
-})
-
-comparison_chart = alt.Chart(comparison_df).mark_bar().encode(
-    x=alt.X("Scenario", title="Scenario"),
-    y=alt.Y("Efficiency (%)", title="Efficiency (%)"),
-    color=alt.Color("Scenario", legend=None),
-    tooltip=["Scenario", "Efficiency (%)"]
-).properties(
-    title="Efficiency Comparison",
-    width=600,
-    height=300
-)
-st.altair_chart(comparison_chart, use_container_width=True)
-
-
         if eta_stove < eff_low:
             st.markdown(f"<span style='color:{DASHBOARD_COLORS['alert']}'>⚠️ Efficiency Below Threshold!</span>", unsafe_allow_html=True)
         if t_surface > shell_high:
