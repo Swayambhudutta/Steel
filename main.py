@@ -37,7 +37,7 @@ def calculate_efficiency(Q_blast, Q_fuel, Q_air_comb, Q_flue, Q_shell):
     total_input = Q_fuel + Q_air_comb
     if total_input <= 0:
         return 0.0
-    efficiency = Q_blast */ total_input
+    efficiency = Q_blast / total_input
     return max(0.0, min(efficiency, 1.0))
 
 # What-if user inputs
