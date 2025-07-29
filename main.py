@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import altair as alt
-from heat_balance import *
-from data_loader import *
+from heat_balance import calculate_heat_input, calculate_heat_output, calculate_flue_loss, calculate_shell_loss
+from data_loader import get_latest_cycle, get_historical_data, get_condition_index
 from config import THRESHOLDS, DASHBOARD_COLORS
 
 st.set_page_config(page_title="Hot Blast Stove Heat Balance", layout="wide")
@@ -31,6 +31,14 @@ cycle_long = st.sidebar.slider("Long Cycle Duration (min)", 60, 300, int(THRESHO
 st.sidebar.header("What-If Inputs")
 stove_select = st.sidebar.selectbox("Stove ID", sorted(df['stove_id'].unique()))
 latest = get_latest_cycle(df, stove_select)
+
+# Efficiency calculation function (corrected)
+def calculate_efficiency(Q_blast, Q_fuel, Q_air_comb, Q_flue, Q_shell):
+    total_input = Q_fuel + Q_air_comb
+    if total_input <= 0:
+        return 0.0
+    efficiency = Q_blast / total_input
+    return max(0.0, min(efficiency, 1.0))
 
 # What-if user inputs
 st.markdown("## 🟧 Projections (Orange) – Current Cycle / What-If")
