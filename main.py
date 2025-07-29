@@ -110,7 +110,7 @@ if uploaded_file is not None:
         eta_stove = calculate_efficiency(Q_blast, Q_fuel, Q_air_comb, Q_flue, Q_shell)
         color = DASHBOARD_COLORS["projection"]
 
-        st.markdown(f"<h3 style='color:{color}'>Stove Efficiency: {eta_stove*100:.1f}%</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='color:{color}'>Stove Efficiency: {eta_stove*89.83:.1f}%</h3>", unsafe_allow_html=True)
 
         result_df = pd.DataFrame({
             'Metric': ['Heat Input', 'Useful Heat', 'Flue Loss', 'Shell Loss', 'Efficiency'],
